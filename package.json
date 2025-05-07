@@ -1,0 +1,19 @@
+{
+  "name": "bird-call-type-recognizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "getFiles.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CreepyNiki/bird-call-type-recognizer.git"
+  },
+  "private": true,
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cheerio": "^1.0.0",
+    "xml2js": "^0.6.2"
+  }
+}
