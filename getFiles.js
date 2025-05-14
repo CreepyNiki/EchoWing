@@ -55,9 +55,9 @@ async function getDataFile(maxAmount) {
                 // Extraktion der Länge des Files
                 const length = $(cells[2]).text().trim();
 
-                // Überprüfung, ob die Länge des Files kleiner als 1:30 ist
+                // Überprüfung, ob die Länge des Files kleiner als 5 Minuten ist
                 const [minutes, seconds] = length.split(':').map(Number);
-                if (minutes > 1 || (minutes === 1 && seconds > 30)) {
+                if (minutes > 5 || (minutes === 5)) {
                     return;
                 }
 
@@ -70,7 +70,7 @@ async function getDataFile(maxAmount) {
                 // Extraktion des Downloadlinks
                 const downloadLink = $(cells[11]).find('a').attr('href');
                 // Erstellung eines Titels der Datei aus den zuvor extrahierten Daten
-                const title = `${bird}_(${length.replace(':', '_')})_${country}_${Type}_${Quality}`;
+                const title = `${bird}_(${length.replace(':', '_')})_${country.replace(' ', '')}_${Type.replace(' ', '')}_${Quality}`;
 
                 // Überprüfung, ob der Typ in der Liste der gewünschten Typen ist und ob die maximale Anzahl an Files des jeweiligen Typs noch nicht erreicht ist
                 if (["song", "call", "alarm call", "begging call"].includes(Type) && typeCounters[Type] < maxAmount) {
@@ -138,7 +138,7 @@ async function writeJsonAndDownloadFiles(overview) {
 
 // Hauptfunktion, die die Daten abruft und die Dateien herunterlädt
 async function main() {
-    const overview = await getDataFile(40);
+    const overview = await getDataFile(45);
     await writeJsonAndDownloadFiles(overview);
 }
 
