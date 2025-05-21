@@ -138,6 +138,7 @@ async function writeJsonAndDownloadFiles(overview) {
 
 // Hauptfunktion, die die Daten abruft und die Dateien herunterlädt
 async function main() {
+
     const overview = await getDataFile(45);
     await writeJsonAndDownloadFiles(overview);
 }

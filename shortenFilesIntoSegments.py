@@ -3,52 +3,48 @@ import os
 import re
 
 def process_audio_files(files_dir):
-    # Verarbeitung der MP3-Dateien
     for root, dirs, files in os.walk(files_dir):
-        # Finden von allen MP3-Dateien im Verzeichnis
         for file in files:
             if file.endswith('.mp3'):
                 file_path = os.path.join(root, file)
                 audio = AudioSegment.from_file(file_path)
                 duration = audio.duration_seconds
 
-                # Extrahieren des ursprünglichen Dateinamens ohne Länge
                 base_name = re.sub(r'\(\d+_\d+\)', '', os.path.splitext(file)[0]).strip()
                 parts = base_name.split('_', 1)
-
-                # Variable zum prüfen, ob Splits erstellt wurden
                 splits_created = False
 
-                # Wenn die Dauer über 120 Sekunden ist, in Drittel schneiden
+                # Split in 4 Teile, wenn Dauer > 120s
                 if duration > 120:
-                    segment_length = len(audio) // 3
-                    for i in range(3):
-                        segment = audio[i * segment_length:(i + 1) * segment_length]
-                        new_length = f"{int(segment.duration_seconds // 60)}_{int(segment.duration_seconds % 60)}"
-                        new_file_name = f"{parts[0]}_{new_length}_{parts[1]}_part{i + 1}.mp3"
-                        segment.export(os.path.join(root, new_file_name), format="mp3")
-                        splits_created = True
-
-                # Wenn die Dauer zwischen 80 und 120 Sekunden liegt, in Hälften schneiden
+                    num_parts = 4
+                    label = "quarter"
+                # Split in 3 Drittel, wenn 80 < Dauer ≤ 120s
                 elif 80 < duration <= 120:
-                    segment_length = len(audio) // 2
-                    for i in range(2):
+                    num_parts = 3
+                    label = "third"
+                # Split in 2 Hälften, wenn 50 < Dauer ≤ 80s
+                elif 50 < duration <= 80:
+                    num_parts = 2
+                    label = "half"
+                else:
+                    num_parts = 1  # Keine Teilung
+
+                if num_parts > 1:
+                    segment_length = len(audio) // num_parts
+                    for i in range(num_parts):
                         segment = audio[i * segment_length:(i + 1) * segment_length]
                         new_length = f"{int(segment.duration_seconds // 60)}_{int(segment.duration_seconds % 60)}"
-                        # Einfügen des Zeitstempels in den Dateinamen
-                        new_file_name = f"{parts[0]}_{new_length}_{parts[1]}_half{i + 1}.mp3"
+                        new_file_name = f"{parts[0]}_{new_length}_{parts[1]}_{label}{i + 1}.mp3"
                         segment.export(os.path.join(root, new_file_name), format="mp3")
                         splits_created = True
 
-                # Löschen der Ursprungsdatei, wenn Splits erstellt wurden
                 if splits_created:
                     os.remove(file_path)
 
 def deleteallparts(files_dir):
-    # Löschen aller bestehenden Teile
     for root, dirs, files in os.walk(files_dir):
         for file in files:
-            if re.search(r'_part\d+|_half\d+', file):
+            if re.search(r'_quarter\d+|_third\d+|_half\d+', file):
                 os.remove(os.path.join(root, file))
 
 # Beispielaufruf
