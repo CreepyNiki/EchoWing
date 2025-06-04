@@ -4,6 +4,7 @@ import json
 import os
 from collections import Counter
 import csv
+import re
 
 birdName = "Blaumeise"
 speciesName = "Eurasian Blue Tit"
@@ -48,7 +49,7 @@ def createJSONFiles():
 # Methode zum Erstellen einer CSV-Datei mit der Zusammenfassung der Ergebnisse der Analyse
 def createCSVFile():
     # CSV-Datei wird erstellt
-    csv_file = open('data.csv', 'w', newline='', encoding='utf-8')
+    csv_file = open(os.path.join(files_dir, "data.csv"), 'w', newline='', encoding='utf-8')
     csv_writer = csv.writer(csv_file)
     # CSV-Header
     csv_writer.writerow(['FileName', 'Common Name'])
@@ -60,6 +61,8 @@ def createCSVFile():
                 fileName = os.path.splitext(file)[0]
                 print(f"Processing file: {file_path}")
                 with open(file_path, 'r', encoding='utf-8') as json_file:
+                    # soundType extrahieren: Wort vor _[A-Z]_result
+                    soundType = fileName.split('_')[-3]
                     data = json.load(json_file)
                     # Extrahieren der 'common_name' (Vogelnamen auf Englisch) aus den JSON-Daten
                     common_name = [detection["common_name"] for detection in data]
@@ -67,9 +70,9 @@ def createCSVFile():
                     if(len(common_name) > 0):
                         most_common = Counter(common_name).most_common(1)[0][0]
                         if(most_common == speciesName):
-                            csv_writer.writerow([fileName, most_common])
+                            csv_writer.writerow([fileName, most_common, soundType])
                         else:
-                            print(f"File: {fileName} - Most common species: {most_common}")
+                            print(f"File: {fileName} - Most common species: {most_common} - soundType: {soundType}")
 
 
 
