@@ -48,32 +48,27 @@ def createJSONFiles():
 
 # Methode zum Erstellen einer CSV-Datei mit der Zusammenfassung der Ergebnisse der Analyse
 def createCSVFile():
-    # CSV-Datei wird erstellt
     csv_file = open(os.path.join(files_dir, "data.csv"), 'w', newline='', encoding='utf-8')
     csv_writer = csv.writer(csv_file)
     # CSV-Header
-    csv_writer.writerow(['FileName', 'Common Name'])
+    csv_writer.writerow(['FileName', 'Common Name', 'SoundType', 'Start Time', 'End Time'])
     for root, dirs, files in os.walk(files_dir):
         for file in files:
             if file.endswith('.json'):
                 file_path = os.path.join(root, file)
-                # Herausfiltern des Dateinamens ohne Endung der json-Datei
                 fileName = os.path.splitext(file)[0]
-                print(f"Processing file: {file_path}")
                 with open(file_path, 'r', encoding='utf-8') as json_file:
-                    # soundType extrahieren: Wort vor _[A-Z]_result
-                    soundType = fileName.split('_')[-3]
                     data = json.load(json_file)
-                    # Extrahieren der 'common_name' (Vogelnamen auf Englisch) aus den JSON-Daten
-                    common_name = [detection["common_name"] for detection in data]
-                    # GitHubCopilot prompt: how to print out the most common common-name in my detection list
-                    if(len(common_name) > 0):
-                        most_common = Counter(common_name).most_common(1)[0][0]
-                        if(most_common == speciesName):
-                            csv_writer.writerow([fileName, most_common, soundType])
-                        else:
-                            print(f"File: {fileName} - Most common species: {most_common} - soundType: {soundType}")
-
+                    # soundType extrahieren: Wort vor _[A-Z]_result
+                    parts = fileName.split('_')
+                    soundType = parts[-3] if len(parts) >= 3 else ""
+                    for detection in data:
+                        common_name = detection.get("common_name", "")
+                        start_time = detection.get("start_time", "")
+                        end_time = detection.get("end_time", "")
+                        confidence = detection.get("confidence", 0)
+                        csv_writer.writerow([fileName, common_name, soundType, start_time, end_time, confidence])
+    csv_file.close()
 
 
 # Löschen aller bestehenden JSON-Dateien
