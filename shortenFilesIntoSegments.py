@@ -1,71 +1,54 @@
 from pydub import AudioSegment
 import os
 import re
+import pydub
+import pandas as pd
+import librosa
+import soundfile as sf
 
-# Funktion zum Teilen von Audiodateien
-def process_audio_files(files_dir):
+def mp3towav(files_dir):
+    # alle mp3-Dateien herausfiltern
     for root, dirs, files in os.walk(files_dir):
-        # alle mp3-Dateien im Verzeichnis und Unterverzeichnissen finden
         for file in files:
             if file.endswith('.mp3'):
                 file_path = os.path.join(root, file)
                 audio = AudioSegment.from_file(file_path)
-                duration = audio.duration_seconds
+                # neuen Pfad zusammensetzen
+                wav_file_path = os.path.splitext(file_path)[0] + '.wav'
+                # Nutzen von pydub zum Konvertieren in WAV -> https://stackoverflow.com/questions/5120555/how-can-i-convert-a-wav-from-stereo-to-mono-in-python
+                audio.set_channels(1)
+                audio.set_frame_rate(16000)
+                audio.export(wav_file_path, format='wav')
+                os.remove(file_path)
+                print(f"Converted {file} to {wav_file_path}")
 
-                # Dateinamen herausfiltern -> RegEx von Deepseek generiert
-                base_name = os.path.splitext(file)[0]
-                match = re.match(r'(.+?)_\(\d+_\d+\)_([A-Za-z]+)_(.+)', base_name)
-                if not match:
-                    continue
-                # Splitten des Dateinamens in Vogelnamen, Land und Rest des Filenamens
-                basename, country, rest = match.groups()
-                splits_created = False
 
-                # Split in 4 Teile, wenn Dauer > 120s
-                if duration > 120:
-                    num_parts = 4
-                # Split in 3 Drittel, wenn 80 < Dauer ≤ 120s
-                elif 80 < duration <= 120:
-                    num_parts = 3
-                # Split in 2 Hälften, wenn 50 < Dauer ≤ 80s
-                elif 50 < duration <= 80:
-                    num_parts = 2
-                # Keine Teilung
-                else:
-                    num_parts = 1
+def generateSplitFiles(files_dir, birdName):
+    df = pd.read_csv(f'Files/{birdName}/data.csv')
 
-                if num_parts > 1:
-                    # Audio in die entsprechenden Teile aufteilen
-                    segment_length = len(audio) // num_parts
-                    for i in range(num_parts):
-                        segment = audio[i * segment_length:(i + 1) * segment_length]
-                        # Berechnung der neuen Länge in Minuten und Sekunden
-                        new_length = f"{int(segment.duration_seconds // 60)}_{int(segment.duration_seconds % 60)}"
-                        # Erstellen des neuen Dateinamens
-                        new_file_name = f"{basename}_{new_length}_{country}{i+1}_{rest}.mp3"
-                        segment.export(os.path.join(root, new_file_name), format="mp3")
-                        splits_created = True
+    # Gruppiere nach Datei, damit jede Ursprungsdatei nur einmal gelöscht wird
+    grouped = df.groupby(['SoundType', 'FileName'])
+    for (label, file_name), group in grouped:
+        label_folder = label.replace(' ', '')
+        output_dir = f"Files/{birdName}/{label_folder}"
+        os.makedirs(output_dir, exist_ok=True)
 
-                if splits_created:
-                    os.remove(file_path)
-
-def deleteallparts(files_dir):
-    for root, dirs, files in os.walk(files_dir):
-        files_set = set(files)
-        for file in files:
-            if file.endswith('.mp3'):
-                base_name = os.path.splitext(file)[0]
-                match = re.match(r'(.+?)_\(\d+_\d+\)_([A-Za-z]+)_(.+)', base_name)
-                if not match:
-                    continue
-                basename, country, rest = match.groups()
-                # Löschen der Ursprungsfiles, welche geteilt wurden -> RegEx von Deepseek generiert
-                pattern = re.compile(re.escape(f"{basename}_") + r"\d+_\d+_" + re.escape(f"{country}") + r"\d+_" + re.escape(rest) + r"\.mp3")
-                if any(pattern.fullmatch(f) for f in files_set):
-                    os.remove(os.path.join(root, file))
+        input_file = f"Files/{birdName}/{label}/{file_name}.wav"
+        for _, row in group.iterrows():
+            output_file = f"{output_dir}/{file_name}_{row['Start Time']}_{row['End Time']}.wav"
+            try:
+                start = float(row['Start Time'])
+                duration = float(row['End Time']) - float(row['Start Time'])
+                y, sr = librosa.load(input_file, sr=16000, offset=start, duration=duration)
+                sf.write(output_file, y, sr)
+            except Exception as e:
+                print(f"Error processing {input_file}: {e}")
+        # Ursprungsdatei erst nach allen Splits löschen
+        if os.path.exists(input_file):
+            os.remove(input_file)
 
 # Beispielaufruf
 birdName = "Blaumeise"
 files_dir = f"Files/{birdName}/"
-deleteallparts(files_dir)
-process_audio_files(files_dir)
+mp3towav(files_dir)
+generateSplitFiles(files_dir, birdName)

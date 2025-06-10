@@ -79,7 +79,7 @@ async function getDataFile(maxAmount) {
                         bird: bird,
                         length: length,
                         country: country,
-                        Type: Type,
+                        Type: Type.replace(/ /g, ''),
                         Quality: Quality,
                         downloadLink: downloadLink,
                         page: page
@@ -99,7 +99,8 @@ async function getDataFile(maxAmount) {
 async function writeJsonAndDownloadFiles(overview) {
     // Erstellen der Hauptordnerstruktur
     for (const type in overview) {
-        const typeFolder = path.join(downloadDir, type);
+        const typeFolderName = type.replace(/ /g, '');
+        const typeFolder = path.join(downloadDir, typeFolderName);
 
         // Überprüfen, ob der Ordner für den jeweiligen Typ bereits existiert, und erstellen, falls nicht
         if (!fs.existsSync(typeFolder)) {
@@ -107,7 +108,7 @@ async function writeJsonAndDownloadFiles(overview) {
         }
 
         // Schreiben der JSON-Datei für den jeweiligen Typ
-        const jsonFilePath = path.join(typeFolder, `${type}.json`);
+        const jsonFilePath = path.join(typeFolder, `${typeFolderName}.json`);
         fs.writeFileSync(jsonFilePath, JSON.stringify(overview[type], null, 2));
 
         for (const item of overview[type]) {

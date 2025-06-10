@@ -2,9 +2,7 @@ from birdnetlib import Recording
 from birdnetlib.analyzer import Analyzer
 import json
 import os
-from collections import Counter
 import csv
-import re
 
 birdName = "Blaumeise"
 speciesName = "Eurasian Blue Tit"
@@ -40,7 +38,7 @@ def createJSONFiles():
                 result = recording.detections
                 result_json = json.dumps(result, indent=4)
                 # Für jede mp3-Datei wird eine JSON-Datei erstellt
-                output_file = os.path.join(root, f"{fileName}_result.json")
+                output_file = os.path.join(root, f"{fileName}.json")
                 with open(output_file, 'w') as json_file:
                     json_file.write(result_json)
                 print(f"Results saved to: {output_file}")
@@ -51,7 +49,7 @@ def createCSVFile():
     csv_file = open(os.path.join(files_dir, "data.csv"), 'w', newline='', encoding='utf-8')
     csv_writer = csv.writer(csv_file)
     # CSV-Header
-    csv_writer.writerow(['FileName', 'Common Name', 'SoundType', 'Start Time', 'End Time'])
+    csv_writer.writerow(['FileName', 'Common Name', 'Country', 'SoundType', 'Start Time', 'End Time', 'Confidence'])
     for root, dirs, files in os.walk(files_dir):
         for file in files:
             if file.endswith('.json'):
@@ -61,13 +59,16 @@ def createCSVFile():
                     data = json.load(json_file)
                     # soundType extrahieren: Wort vor _[A-Z]_result
                     parts = fileName.split('_')
-                    soundType = parts[-3] if len(parts) >= 3 else ""
+                    soundType = parts[-2] if len(parts) >= 3 else ""
+                    country = parts[-3] if len(parts) >= 3 else ""
                     for detection in data:
-                        common_name = detection.get("common_name", "")
-                        start_time = detection.get("start_time", "")
-                        end_time = detection.get("end_time", "")
-                        confidence = detection.get("confidence", 0)
-                        csv_writer.writerow([fileName, common_name, soundType, start_time, end_time, confidence])
+                        if detection.get("common_name", "") == speciesName:
+                            common_name = detection.get("common_name", "")
+                            start_time = detection.get("start_time", "")
+                            end_time = detection.get("end_time", "")
+                            confidence = detection.get("confidence", 0)
+                            csv_writer.writerow([fileName, common_name, country, soundType, start_time, end_time, confidence])
+
     csv_file.close()
 
 
