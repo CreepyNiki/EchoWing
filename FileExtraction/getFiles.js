@@ -6,7 +6,7 @@ require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }
 // Abrufen des Vogelnamens aus der .env Datei
 const birdName = process.env.birdName;
 
-// Zusammensetzen der URL für die Abfrage auf xeno-canto
+// Zusammensetzen der URL für die Abfrage auf xeno-canto -> encodeURIComponent als Hilfe zB. beim Replacement von Leerzeichen
 const targetUrl = 'https://xeno-canto.org/explore?query=' + encodeURIComponent(birdName);
 console.log(targetUrl);
 const downloadDir = path.join(__dirname, '../SoundFiles', birdName);
@@ -21,7 +21,7 @@ fs.mkdirSync(downloadDir);
 
 // Funktion zum erneuten Abrufen nach 5 Sekunden von Daten, falls 503 Fehler auftritt
 async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
-    //
+    // Schleife, die checkt, wie viele Retries schon durchgeführt wurden
     for (let i = 0; i < retries; i++) {
         try {
             return await axios.get(url, options);
@@ -210,7 +210,7 @@ async function writeJsonAndDownloadFiles(overview) {
 // Hauptfunktion, die die Daten abruft und die Dateien herunterlädt
 async function main() {
     // Definieren der maximalen Anzahl an Einträgen pro Typ
-    const maxAmounts = { song: 40, call: 40, "alarm call": 40, "flight call": 80 };
+    const maxAmounts = { song: 40, call: 40, "alarm call": 40, "begging call": 40 };
     const overview = await getDataFile(maxAmounts, startPage = 1);
     await writeJsonAndDownloadFiles(overview);
 }

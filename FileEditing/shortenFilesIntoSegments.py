@@ -33,9 +33,10 @@ def generateSplitFiles(files_dir, birdName):
     # Erstelle eine Menge aller erlaubten Dateinamen mit .wav
     allowed_files = set(df['FileName'].astype(str) + '.wav')
 
-    # Durchsuche alle WAV-Dateien in den Unterordnern
+    # Durchsuche alle WAV-Dateien in den Unterordnern mit glob -> angepasster Code von: https://stackoverflow.com/questions/3964681/find-all-files-in-a-directory-with-extension-txt-in-python
     for wav_file in glob.glob(os.path.join(files_dir, '*', '*.wav')):
         file_base = os.path.basename(wav_file)
+        # Files bei denen die häufigste Vogelart nicht der aktuellen entspricht werden gelöscht
         if file_base not in allowed_files:
             os.remove(wav_file)
             print(f"Deleted unused file: {wav_file}")

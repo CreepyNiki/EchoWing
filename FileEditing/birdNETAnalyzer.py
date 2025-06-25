@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 birdName = os.getenv('birdName')
-speciesName = "Dunnock"
+speciesName = "Great Tit"
 files_dir = f"../SoundFiles/{birdName}/"
 print(f"Using files directory: {files_dir}")
 
@@ -66,9 +66,11 @@ def createCSVFile():
                     data = json.load(json_file)
                     # soundType extrahieren: Wort vor _[A-Z]_result
                     parts = fileName.split('_')
+                    # soundType und country aus Filenamen extrahieren -> generiert von ChatGPT
                     soundType = parts[-2] if len(parts) >= 3 else ""
                     country = parts[-3] if len(parts) >= 3 else ""
                     for detection in data:
+                        # Überprüfen, ob die Erkennung dem gesuchten Vogel entspricht
                         if detection.get("common_name", "") == speciesName:
                             common_name = detection.get("common_name", "")
                             start_time = detection.get("start_time", "")
