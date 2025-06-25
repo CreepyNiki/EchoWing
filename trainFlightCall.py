@@ -37,7 +37,7 @@ import random
 
 def prepare_data(balanced=True):
     file_paths_per_class = defaultdict(list)
-    label_names = ['alarmcall', 'beggingcall', 'call', 'song']
+    label_names = ['alarmcall', 'call', 'flightcall', 'song']
     label_to_idx = {label: idx for idx, label in enumerate(label_names)}
 
     for label in label_names:
@@ -164,4 +164,3 @@ new_model.fit(train_ds,
 print("💾 Speichere Modell...")
 new_model.save(OUTPUT_MODEL_PATH)
 print(f"✅ Modell gespeichert unter: {OUTPUT_MODEL_PATH}")
-

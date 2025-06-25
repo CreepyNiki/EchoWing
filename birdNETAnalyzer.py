@@ -3,9 +3,12 @@ from birdnetlib.analyzer import Analyzer
 import json
 import os
 import csv
+from dotenv import load_dotenv
 
-birdName = "Blaumeise"
-speciesName = "Eurasian Blue Tit"
+load_dotenv()
+
+birdName = os.getenv('birdName')
+speciesName = "European Starling"
 files_dir = f"Files/{birdName}/"
 
 species_list = []
@@ -26,6 +29,9 @@ def createJSONFiles():
             if file.endswith('.mp3'):
                 file_path = os.path.join(root, file)
                 fileName = os.path.splitext(file)[0]
+                if not os.path.isfile(file_path):
+                    print(f"Datei nicht gefunden: {file_path}")
+                    continue
                 print(f"Processing file: {fileName}")
 
                 # Nutzen des BirdNET Repos

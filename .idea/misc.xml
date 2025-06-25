@@ -3,7 +3,7 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.11 (bird-call-type-recognizer)" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_20" default="true">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="Python 3.11 (bird-call-type-recognizer)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const birdName = process.env.birdName;
 const targetUrl = 'https://xeno-canto.org/explore?query=' + encodeURIComponent(birdName);
-console.log(targetUrl)
+console.log(targetUrl);
 const downloadDir = path.join(__dirname, 'Files', birdName);
 
 // Cleanup der alten Ordnerstruktur
@@ -17,17 +17,13 @@ if (fs.existsSync(downloadDir)) {
 // Erstellen des neuen Folders
 fs.mkdirSync(downloadDir);
 
-// Funktion zum erneuten Abrufen nach 5 Sekunden von Daten falls 503 Fehler auftritt
 async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
-    //
     for (let i = 0; i < retries; i++) {
         try {
             return await axios.get(url, options);
         } catch (error) {
-            // Wenn ein 503 Fehler auftritt, wird nach einer Verzögerung erneut versucht und ein Retry durchgeführt
             if (error.response && error.response.status === 503 && i < retries - 1) {
-                console.warn(`503 erhalten, versuche erneut in 5 Sekunden...`);
-                // Timeout wird gesetzt und Promise wird abgewartet
+                console.warn(`503 erhalten, versuche erneut in ${delay}ms...`);
                 await new Promise(res => setTimeout(res, delay));
             } else {
                 throw error;
@@ -36,18 +32,15 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
     }
 }
 
-/* Funktion zur Datenextraktion von der Seite xeno-canto
- maxAmount ist die maximale Anzahl an Einträgen pro Rufartentyp
- startPage ist die Startseite der Iteration falls mehrere Vögel einen ähnlichen Namen haben und nicht brauchbar gefiltert sind
-*/
+const maxAmounts = { song: 40, call: 40, "alarm call": 40};
 
+// Funktion zur Datenextraktion von der Seite xeno-canto
 async function getDataFile(maxAmount, startPage = 1) {
-    // Counter Variable zum Erfassen, wie viele Einträge der verschiedenen Typen bereits gemacht wurden
-    const typeCounters = { song: 0, call: 0, "alarm call": 0, "begging call": 0 };
-    const overview = { song: [], call: [], "alarm call": [], "begging call": [] };
+    const typeCounters = { song: 0, call: 0, "alarm call": 0};
+    const overview = { song: [], call: [], "alarm call": []};
     let page = startPage;
 
-    while (Object.values(typeCounters).some(count => count < maxAmount)) {
+    while (Object.entries(typeCounters).some(([type, count]) => count < maxAmounts[type])) {
         const pageUrl = `${targetUrl}&pg=${page}`;
         const pageData = await fetchWithRetry(pageUrl, {
             headers: { 'Accept-Language': 'de' }
@@ -93,7 +86,7 @@ async function getDataFile(maxAmount, startPage = 1) {
                 const title = `${bird}_(${length.replace(':', '_')})_${country.replace(' ', '')}_${Type.replace(' ', '')}_${Quality}`;
                 console.log(`Processing bird: ${bird + ' - ' + page + ' - ' + Type + ' - ' + title}`);
                 console.log('TypeCounters:', typeCounters);
-                if (["song", "call", "alarm call", "begging call"].includes(Type) && typeCounters[Type] < maxAmount) {
+                if (["song", "call", "alarm call"].includes(Type) && typeCounters[Type] < maxAmounts[Type]) {
                     overview[Type].push({
                         title: title,
                         bird: bird,
