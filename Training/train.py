@@ -162,12 +162,23 @@ file_paths, labels, class_names = prepare_data()
 X_train, X_val, y_train, y_val = train_test_split(file_paths, labels, test_size=0.20, stratify=labels, random_state=42)
 
 # Training mit verschiedenen Datensatzgrößen
-# X_train = X_train[:int(0.25 * len(X_train))]
-# y_train = y_train[:int(0.25 * len(y_train))]
-# X_train = X_train[:int(0.50 * len(X_train))]
-# y_train = y_train[:int(0.50 * len(y_train))]
-# X_train = X_train[:int(0.75 * len(X_train))]
-# y_train = y_train[:int(0.75 * len(y_train))]
+# selected_indices = []
+# # gezielte Auswahl der Trainingsdaten, um ausgewogenen Split der Klassen zu erreichen
+# for class_idx in np.unique(y_train):
+#     # Indizes aller Elemente dieser Klasse
+#     indices = [i for i, y in enumerate(y_train) if y == class_idx]
+#     # n = int(0.25 * len(indices))
+#     # n = int(0.5 * len(indices))
+#     n = int(0.75 * len(indices))
+#     selected_indices.extend(indices[:n])
+#
+# selected_indices.sort()
+# X_train = [X_train[i] for i in selected_indices]
+# y_train = [y_train[i] for i in selected_indices]
+
+# Ausgabe der Anzahl der Trainingsdaten pro Klasse
+print(f"Anzahl der Trainingsdaten pro Klasse: {dict(zip(class_names, np.bincount(y_train)))}")
+
 
 # Herausschreiben der Dateipfade der Testfiles für die spätere Prediction
 with open(f'../models/test_files/{birdName}_test_files.txt', "w") as f:
