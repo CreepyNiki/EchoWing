@@ -52,7 +52,8 @@ def prepare_data(balanced=True):
 
     if balanced:
         # Anzahl der kleinsten Klasse ermitteln
-        min_count = min(len(files) for files in file_paths_per_class.values())
+        min_label, min_count = min(((label, len(files)) for label, files in file_paths_per_class.items()), key=lambda x: x[1])
+        print(f"Minimale Anzahl an Dateien: {min_count} (Klasse: {min_label})")
 
 
         for label in label_names:
@@ -161,7 +162,7 @@ file_paths, labels, class_names = prepare_data()
 # Train-Test-Split der Daten -> 80% Training, 20% Test
 X_train, X_val, y_train, y_val = train_test_split(file_paths, labels, test_size=0.20, stratify=labels, random_state=42)
 
-# Training mit verschiedenen Datensatzgrößen
+# # Training mit verschiedenen Datensatzgrößen
 # selected_indices = []
 # # gezielte Auswahl der Trainingsdaten, um ausgewogenen Split der Klassen zu erreichen
 # for class_idx in np.unique(y_train):

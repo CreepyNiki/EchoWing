@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 birdName = os.getenv('birdName')
-speciesName = "Great Tit"
+speciesName = "Eurasian Blue Tit"
 files_dir = f"../SoundFiles/{birdName}/"
 print(f"Using files directory: {files_dir}")
 
