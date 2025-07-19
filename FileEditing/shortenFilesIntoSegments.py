@@ -56,7 +56,7 @@ def generateSplitFiles(files_dir, birdName):
             try:
                 start = float(row['Start Time'])
                 duration = float(row['End Time']) - float(row['Start Time'])
-                y, sr = librosa.load(input_file, sr=32000, offset=start, duration=duration)
+                y, sr = librosa.load(input_file, sr=48000, offset=start, duration=duration)
                 sf.write(output_file, y, sr)
                 print(f"Created split file: {output_file}")
             except Exception as e:
