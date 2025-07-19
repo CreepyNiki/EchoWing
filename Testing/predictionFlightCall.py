@@ -11,8 +11,8 @@ from sklearn.preprocessing import label_binarize
 load_dotenv()
 birdName = os.getenv('birdName')
 
-SR = 32000
-DURATION = 4.5
+SR = 48000
+DURATION = 3.0
 SAMPLES = int(SR * DURATION)
 MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras'
 CLASS_NAMES = ['alarmcall', 'call', 'flightcall', 'song']

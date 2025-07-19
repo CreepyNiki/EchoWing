@@ -24,9 +24,9 @@ OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdN
 
 # Parameter
 # Sampling Rate
-SR = 32000
+SR = 48000
 # Dauer der Audiodateien in Sekunden -> 3 Sekunden konnte nicht verwendet werden
-DURATION = 4.5
+DURATION = 3.0
 # Anzahl Samples pro Audiodatei
 SAMPLES = int(SR * DURATION)
 # BatchSize

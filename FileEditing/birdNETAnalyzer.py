@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 birdName = os.getenv('birdName')
-speciesName = "Eurasian Blue Tit"
+speciesName = "Song Thrush"
 files_dir = f"../SoundFiles/{birdName}/"
 print(f"Using files directory: {files_dir}")
 
@@ -64,13 +64,13 @@ def createCSVFile():
                 fileName = os.path.splitext(file)[0]
                 with open(file_path, 'r', encoding='utf-8') as json_file:
                     data = json.load(json_file)
-                    # soundType extrahieren: Wort vor _[A-Z]_result
+                    # soundType extrahieren: Wort vor [A-E]
                     parts = fileName.split('_')
                     # soundType und country aus Filenamen extrahieren -> generiert von ChatGPT
                     soundType = parts[-2] if len(parts) >= 3 else ""
                     country = parts[-3] if len(parts) >= 3 else ""
                     for detection in data:
-                        # Überprüfen, ob die Erkennung dem gesuchten Vogel entspricht
+                        # Überprüfen, ob die Erkennung dem gesuchten Vogel entspricht -> nur Erkennungen der passenden Vogelart werden in die CSV-Datei geschrieben
                         if detection.get("common_name", "") == speciesName:
                             common_name = detection.get("common_name", "")
                             start_time = detection.get("start_time", "")
@@ -78,6 +78,8 @@ def createCSVFile():
                             confidence = detection.get("confidence", 0)
                             csv_writer.writerow([fileName, common_name, country, soundType, start_time, end_time, confidence])
 
+                # JSON-Datei nach Verarbeitung löschen
+                os.remove(file_path)
     csv_file.close()
 
 

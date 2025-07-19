@@ -19,14 +19,14 @@ load_dotenv()
 
 birdName = os.getenv('birdName')
 birdDir = f'../SoundFiles/{birdName}'
-MODEL_PATH = '../models/BirdNETModels/audio-model.h5'  # Pfad zum geladenen BirdNET BaseModel
+MODEL_PATH = '../models/BirdNETModels/audio-model.h5'  # Pfad zum geladenen BirdNET BaseModel -> heruntergeladen von https://zenodo.org/records/15050749
 OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras' # Pfad zum gespeicherten Modell
 
 # Parameter
 # Sampling Rate
-SR = 32000
+SR = 48000
 # Dauer der Audiodateien in Sekunden -> 3 Sekunden konnte nicht verwendet werden
-DURATION = 4.5
+DURATION = 3.0
 # Anzahl Samples pro Audiodatei
 SAMPLES = int(SR * DURATION)
 # BatchSize

@@ -11,6 +11,10 @@ birdName = os.getenv('birdName')
 
 files_dir = f"../SoundFiles/{birdName}/"
 
+# ffmpeg im bin Ordner des BirdNET Repos wird genutzt, um mp3-Dateien in wav-Dateien zu konvertieren
+ffmpeg_path = os.path.join(os.path.dirname(__file__), '..', 'bin', 'ffmpeg.exe')
+AudioSegment.converter = ffmpeg_path
+
 def mp3towav(files_dir):
     # alle mp3-Dateien herausfiltern
     for root, dirs, files in os.walk(files_dir):
@@ -22,7 +26,7 @@ def mp3towav(files_dir):
                 wav_file_path = os.path.splitext(file_path)[0] + '.wav'
                 # Nutzen von pydub zum Konvertieren in WAV -> https://stackoverflow.com/questions/5120555/how-can-i-convert-a-wav-from-stereo-to-mono-in-python
                 audio.set_channels(1)
-                audio.set_frame_rate(32000)
+                audio.set_frame_rate(48000)
                 audio.export(wav_file_path, format='wav')
                 os.remove(file_path)
                 print(f"Converted {file} to {wav_file_path}")

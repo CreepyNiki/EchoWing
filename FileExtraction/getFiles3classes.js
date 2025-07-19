@@ -210,6 +210,7 @@ async function writeJsonAndDownloadFiles(overview) {
 async function main() {
     // Definieren der maximalen Anzahl an Einträgen pro Typ
     const maxAmounts = { song: 40, call: 40, "alarm call": 40};
+    // const maxAmounts = { song: 40, call: 40, "begging call": 40};
     const overview = await getDataFile(maxAmounts, startPage = 1);
     await writeJsonAndDownloadFiles(overview);
 }
