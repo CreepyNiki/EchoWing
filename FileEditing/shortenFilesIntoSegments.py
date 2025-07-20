@@ -26,7 +26,10 @@ def mp3towav(files_dir):
                 wav_file_path = os.path.splitext(file_path)[0] + '.wav'
                 # Nutzen von pydub zum Konvertieren in WAV -> https://stackoverflow.com/questions/5120555/how-can-i-convert-a-wav-from-stereo-to-mono-in-python
                 audio.set_channels(1)
+                # Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
                 audio.set_frame_rate(48000)
+                # Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
+                # audio.set_frame_rate(32000)
                 audio.export(wav_file_path, format='wav')
                 os.remove(file_path)
                 print(f"Converted {file} to {wav_file_path}")
@@ -56,7 +59,10 @@ def generateSplitFiles(files_dir, birdName):
             try:
                 start = float(row['Start Time'])
                 duration = float(row['End Time']) - float(row['Start Time'])
+                # Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
                 y, sr = librosa.load(input_file, sr=48000, offset=start, duration=duration)
+                # Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
+                # y, sr = librosa.load(input_file, sr=32000, offset=start, duration=duration)
                 sf.write(output_file, y, sr)
                 print(f"Created split file: {output_file}")
             except Exception as e:

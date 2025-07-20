@@ -23,10 +23,15 @@ MODEL_PATH = '../models/BirdNETModels/audio-model.h5'  # Pfad zum geladenen Bird
 OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras' # Pfad zum gespeicherten Modell
 
 # Parameter
-# Sampling Rate
+# Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
 SR = 48000
 # Dauer der Audiodateien in Sekunden -> 3 Sekunden konnte nicht verwendet werden
 DURATION = 3.0
+
+# Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
+# SR = 32000
+# DURATION = 4.5
+
 # Anzahl Samples pro Audiodatei
 SAMPLES = int(SR * DURATION)
 # BatchSize
@@ -35,7 +40,14 @@ batchSize = 16
 # Funktion mit der die Daten passend vorbereitet werden
 def prepare_data(balanced=True):
     file_paths_per_class = {}
-    label_names = ['alarmcall', 'beggingcall', 'call', 'song']
+
+    # Hier können die Klassen angepasst werden, die trainiert werden sollen
+    # label_names = ['alarmcall', 'beggingcall', 'call', 'song']
+    # label_names = ['alarmcall', 'call', 'flightcall', 'song']
+    label_names = ['alarmcall', 'call', 'song']
+    # label_names = ['beggingcall', 'call', 'song']
+
+
     # Label werden zu Indizes umgewandelt weil "sparse_categorical_crossentropy" nur mit numerischen Labels arbeiten kann
     label_to_idx = {label: idx for idx, label in enumerate(label_names)}
 
@@ -173,7 +185,7 @@ X_train, X_val, y_train, y_val = train_test_split(file_paths, labels, test_size=
 #     n = int(0.75 * len(indices))
 #     selected_indices.extend(indices[:n])
 #
-# selected_indices.sort()
+# # selected_indices.sort()
 # X_train = [X_train[i] for i in selected_indices]
 # y_train = [y_train[i] for i in selected_indices]
 

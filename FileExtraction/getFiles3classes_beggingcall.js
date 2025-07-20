@@ -45,8 +45,8 @@ async function fetchWithRetry(url, options = {}, retries = 3, delay = 5000) {
 
 async function getDataFile(maxAmounts, startPage = 1) {
     // Counter Variable zum Erfassen, wie viele Einträge der verschiedenen Typen bereits gemacht wurden
-    const typeCounters = { song: 0, call: 0, "alarm call": 0};
-    const overview = { song: [], call: [], "alarm call": []};
+    const typeCounters = { song: 0, call: 0, "begging call": 0};
+    const overview = { song: [], call: [], "begging call": []};
 
     // Startseite für die Iteration, welche bei Aufruf der Methode angegeben werden kann
     let page = startPage;
@@ -108,7 +108,7 @@ async function getDataFile(maxAmounts, startPage = 1) {
 
                 // Extraktion des Landes der Aufnahme
                 const country = $(cells[6]).text().trim();
-                // Extraktion des Typs: Song, Call, Alarm Call
+                // Extraktion des Typs: Song, Call, begging Call
                 const Type = $(cells[9]).text().trim().toLowerCase();
                 // Extraktion der Qualität des Files (A-E)
                 const Quality = $(cells[11]).find('li.selected').text().trim();
@@ -120,7 +120,7 @@ async function getDataFile(maxAmounts, startPage = 1) {
                 console.log('TypeCounters:', typeCounters);
 
                 // Überprüfung, ob der Typ in der Liste der gewünschten Typen ist und ob die maximale Anzahl an Files des jeweiligen Typs noch nicht erreicht ist
-                if (["song", "call", "alarm call"].includes(Type) && typeCounters[Type] < maxAmounts[Type]) {
+                if (["song", "call", "begging call"].includes(Type) && typeCounters[Type] < maxAmounts[Type]) {
                     // Push der Daten in das entsprechende Array im Overview-Objekt
                     overview[Type].push({
                         title: title,
@@ -209,7 +209,7 @@ async function writeJsonAndDownloadFiles(overview) {
 // Hauptfunktion, die die Daten abruft und die Dateien herunterlädt
 async function main() {
     // Definieren der maximalen Anzahl an Einträgen pro Typ
-    const maxAmounts = { song: 40, call: 40, "alarm call": 40};
+    const maxAmounts = { song: 40, call: 40, "begging call": 40};
     const overview = await getDataFile(maxAmounts, startPage = 1);
     await writeJsonAndDownloadFiles(overview);
 }

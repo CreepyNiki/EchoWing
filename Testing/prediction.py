@@ -11,11 +11,23 @@ from sklearn.preprocessing import label_binarize
 load_dotenv()
 birdName = os.getenv('birdName')
 
+# Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
 SR = 48000
 DURATION = 3.0
+
+# Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
+# SR = 32000
+# DURATION = 4.5
+
 SAMPLES = int(SR * DURATION)
 MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras'
-CLASS_NAMES = ['alarmcall', 'beggingcall', 'call', 'song']
+
+# Hier können die Klassen angepasst werden, die evaluiert werden sollen
+# CLASS_NAMES = ['alarmcall', 'beggingcall', 'call', 'song']
+# CLASS_NAMES = ['alarmcall', 'call', 'flightcall', 'song']
+CLASS_NAMES = ['alarmcall', 'call', 'song']
+# CLASS_NAMES = ['beggingcall', 'call', 'song']
+
 
 # Funktion zum Erstellen der random-Baseline
 def random_baseline(y_true):
