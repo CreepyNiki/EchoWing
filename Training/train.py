@@ -25,7 +25,7 @@ OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdN
 # Parameter
 # Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
 SR = 48000
-# Dauer der Audiodateien in Sekunden -> 3 Sekunden konnte nicht verwendet werden
+# Dauer der Audiodateien in Sekunden
 DURATION = 3.0
 
 # Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
@@ -162,6 +162,7 @@ new_model = tf.keras.Model(inputs=model.input, outputs=new_output)
 # Kompilierung
 new_model.compile(
     # Optimizer hinzugefügt
+    # optimizer=tf.keras.optimizers.Adamax(learning_rate=0.03),
     # optimizer=tf.keras.optimizers.Nadam(0.001),
     optimizer=tf.keras.optimizers.Lion(learning_rate=0.0001),
     # Loss-Funktion für Mehrklassenklassifikation
