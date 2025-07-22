@@ -113,6 +113,57 @@ def load_audio(file_path, target_len=SAMPLES):
         y = y[:target_len]
     return y
 
+# Methode zum Berechnen des durchschnittlichen Spektrogramms pro Klasse
+def getAverageSpektrogramperClass(paths, class_names):
+    # Parameter für das Spektrogramm
+    n_mels = 128
+    # fmin -> untere Frequenzgrenze, fmax -> obere Frequenzgrenze
+    fmin = 0
+    fmax = SR // 2
+    # vmin -> untere Grenze der Farbskala, vmax -> obere Grenze der Farbskala
+    vmin = 0
+    vmax = 3
+    # Schrittweite der Legende
+    step = 1
+
+    average_spectrograms = {}
+
+    for class_name in class_names:
+        # Herausfiltern der Pfade der verschiedenen Klassen für die jeweilige Vogelart
+        class_paths = [p for p in paths if class_name in p]
+        class_spectrograms = [
+            # Erstellen des MelSpecLayerSimple des BirdNET Modells -> MelSpecLayerSimple.py
+            MelSpecLayerSimple(
+                sample_rate=SR,
+                spec_shape=(128, 256),
+                frame_step=512,
+                frame_length=1024,
+                fmin=fmin,
+                fmax=fmax,
+                data_format="channels_last"
+            # Laden der Audiodatei und Berechnen des Spektrogramms -> generiert von GitHub Copilot
+            )(load_audio(path)[np.newaxis, :]).numpy().squeeze()
+            for path in class_paths
+        ]
+        # Durchschnittliches Spektrogramm für die Klasse berechnen
+        average_spectrograms[class_name] = np.mean(class_spectrograms, axis=0)
+
+        # Plotten der durchschnittlichen Spektrogramme für jede Klasse
+        plt.figure(figsize=(10, 4))
+        # Spektrogramm anzeigen
+        img = plt.imshow(average_spectrograms[class_name], aspect='auto', origin='lower', cmap='viridis', vmin=vmin, vmax=vmax)
+        plt.title(f'Durchschnittliches Spektrogramm für {class_name}')
+        plt.colorbar(img, ticks=np.arange(vmin, vmax + step, step), format='%+2.0f dB')
+        plt.xlabel('Zeit (Frames)')
+        plt.ylabel('Frequenz (Hz)')
+        # y-Achse anpassen, um die Frequenzen anzuzeigen -> generiert von GitHub Copilot
+        plt.yticks(
+            np.linspace(0, n_mels - 1, 10),
+            labels=[f"{int(hz)}" for hz in np.linspace(fmin, fmax, 10)]
+        )
+        plt.show()
+
+
 # Numpy Array mit allen Audiodateien erstellen -> passt diese über die load_audio Funktion an
 X = np.array([load_audio(path) for path in val_paths])
 # Wahre Labels extrahieren
@@ -139,8 +190,9 @@ for i in range(len(y_pred_classes)):
         print(f"❌ Fehler bei Datei: {val_paths[i]} - Vorhergesagt: {CLASS_NAMES[y_pred_classes[i]]}, Wahrer Wert: {CLASS_NAMES[y_true[i]]}")
 
 # Evaluataionsmetriken
-random_baseline(y_true)
-display_confusion_matrix()
-plot_ROC()
-cohens_kappa(y_true, y_pred_classes)
-plot_precision_recall_curve()
+# random_baseline(y_true)
+# display_confusion_matrix()
+# plot_ROC()
+# cohens_kappa(y_true, y_pred_classes)
+# plot_precision_recall_curve()
+getAverageSpektrogramperClass(val_paths, CLASS_NAMES)
