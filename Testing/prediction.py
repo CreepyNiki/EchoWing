@@ -190,9 +190,9 @@ for i in range(len(y_pred_classes)):
         print(f"❌ Fehler bei Datei: {val_paths[i]} - Vorhergesagt: {CLASS_NAMES[y_pred_classes[i]]}, Wahrer Wert: {CLASS_NAMES[y_true[i]]}")
 
 # Evaluataionsmetriken
-# random_baseline(y_true)
-# display_confusion_matrix()
-# plot_ROC()
-# cohens_kappa(y_true, y_pred_classes)
-# plot_precision_recall_curve()
+random_baseline(y_true)
+display_confusion_matrix()
+plot_ROC()
+cohens_kappa(y_true, y_pred_classes)
+plot_precision_recall_curve()
 getAverageSpektrogramperClass(val_paths, CLASS_NAMES)
