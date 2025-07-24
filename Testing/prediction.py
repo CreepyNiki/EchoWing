@@ -23,9 +23,9 @@ SAMPLES = int(SR * DURATION)
 MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras'
 
 # Hier können die Klassen angepasst werden, die evaluiert werden sollen
-# CLASS_NAMES = ['alarmcall', 'beggingcall', 'call', 'song']
+CLASS_NAMES = ['alarmcall', 'beggingcall', 'call', 'song']
 # CLASS_NAMES = ['alarmcall', 'call', 'flightcall', 'song']
-CLASS_NAMES = ['alarmcall', 'call', 'song']
+# CLASS_NAMES = ['alarmcall', 'call', 'song']
 # CLASS_NAMES = ['beggingcall', 'call', 'song']
 
 
