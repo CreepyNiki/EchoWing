@@ -193,7 +193,7 @@ X_train, X_val, y_train, y_val = train_test_split(file_paths, labels, test_size=
 # y_train = [y_train[i] for i in selected_indices]
 
 # Ausgabe der Anzahl der Trainingsdaten pro Klasse
-print(f"Anzahl der Trainingsdaten pro Klasse: {dict(zip(class_names, np.bincount(y_train)))}")
+print(f"Anzahl der Trainingsdaten pro Klasse: {dict((label, int(count)) for label, count in zip(class_names, np.bincount(y_train)))}")
 
 
 # Herausschreiben der Dateipfade der Testfiles für die spätere Prediction

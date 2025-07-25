@@ -2,7 +2,7 @@
 <module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.11 (bird-call-type-recognizer)" />
+      <configuration sdkName="Python 3.11 (EchoWing)" />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
@@ -10,8 +10,8 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11 (bird-call-type-recognizer)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 (EchoWing)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Python 3.11 (bird-call-type-recognizer) interpreter library" level="application" />
+    <orderEntry type="library" name="Python 3.11 (EchoWing) interpreter library" level="application" />
   </component>
 </module>
