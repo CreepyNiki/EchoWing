@@ -46,7 +46,7 @@ Der **SoundFiles** Ordner sollte im Basisordner des Projekts eingefügt werden
 2. Auswahl der passenden Sample Rate der jeweiligen Vogelart in den Python Skripts **train.py** und **prediction.py**
 <img width="589" height="211" alt="image" src="https://github.com/user-attachments/assets/bd85ec0f-ba54-4a83-af1f-bc6b3468e634" />
 
-3. Starten des Python Skripts **train.py** zum Trainieren des Modells
+3. Starten des Python Skripts **train.py** zum Trainieren des Modells (**nicht nötig falls die Modelle von Sciebo heruntergeladen wurden**)
 4. Starten des Python Skripts **prediction.py** zum Evaluiieren des Modells -> Auswahl der passenden Evaluationsmetriken durch Auskommentieren
 
 Ein großes Dankeschön an das Team von [BirdNET](https://github.com/birdnet-team/BirdNET-Analyzer) für die Bereitstellung ihres Modells! 🙏
