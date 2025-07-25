@@ -43,6 +43,7 @@ Der **SoundFiles** Ordner sollte im Basisordner des "Projekts" eingefügt werden
 
 5. Starten des Python Skripts **birdNETAnalyzer.py** zur Identifikation der Vogelart
 6. Starten des Python Skripts **shortenFilesIntoSegments** zur Segmentierung und Umwandlung der Audioaufnahmen in .wav Format
+   -> Auswahl der passenden Sample Rate der jeweiligen Vogelart an zwei Stellen des Skripts durch das Ändern des sr Attributs
 
 ### Trainieren und Testen des Modells
 1. Umbenennung der "*BIRDNAME*" Variable im .env File zur jeweiligen Vogelart
