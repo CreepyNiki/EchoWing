@@ -10,6 +10,7 @@ EchoWing beschäftigt sich mit der automatisierten Klassifikation verschiedener 
 ## Setup
 
 1. Herunterladen der Audioaufnahmen und Modelle der verschiedenen Vogelarten von **Sciebo**
+   -> Aufgrund der Timeouts und der 503 Errors durch das Blocken durch den Xeno-canto Server kann es sein, dass das Skript öfter wiederholt gestartet werden muss
 
 **Download-Link Modelle**: https://uni-koeln.sciebo.de/s/0p0Wj0WT4d04f03 
 
