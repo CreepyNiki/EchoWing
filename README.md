@@ -14,10 +14,13 @@ EchoWing beschäftigt sich mit der automatisierten Klassifikation verschiedener 
 
 **Download-Link Audiodaten**: https://uni-koeln.sciebo.de/s/0p0Wj0WT4d04f03
 
-2. Ordnerstruktur herstellen
+2. Ordnerstruktur herstellen -> Entpacken der Files
 
 Die heruntergeladenen Ordner müssen in das Projektverzeichnis eingefügt werden. Die Struktur sollte wie folgt aussehen:
 <img width="819" height="356" alt="Ordnerstruktur" src="https://github.com/user-attachments/assets/65eab6a3-6f2e-4150-b6a8-3a2ee5e1e584" />
+
+Der **trained_models** Ordner sollte als Unterordner in den models Ordner eingefügt werden
+Der **SoundFiles** Ordner sollte im Basisordner des Projekts eingefügt werden
 
 ### Preprocessing
 
