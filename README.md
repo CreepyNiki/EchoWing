@@ -1,6 +1,7 @@
 # EchoWing
 
 Bachelorarbeit von Niklas Halft
+
 Thema: **Automatisierte Klassifikation von Vogelgesang und Vogelrufarten mittels Machine Learning**
 
 EchoWing beschäftigt sich mit der automatisierten Klassifikation verschiedener Lautäußerungen heimischer Brutvogelarten – darunter Gesänge, Rufe, Alarmrufe, Bettelrufe und Flugrufe. Im Rahmen dieser Arbeit wurden Audiodaten der zehn häufigsten Brutvogelarten Deutschlands von der Datenbank [Xeno-canto](https://xeno-canto.org) gesammelt. Anschließend wurden diese Aufnahmen mit BirdNET nach Vogelarten klassifiziert und anschließend in dreisekündige Schnipsel zerlegt. Die passenden dreisekündigen Schnipesel einer Vogelart wurden anschließend in einem weiteren gefinetuneten Modell auf ihre Lautäußerungsart klassifiziert. Hierbei wurden aufgrund der unterschiedlichen Datenverfügbarkeit der einzelnen Vogelarten für jede Vogelart ein eigenes Modell trainiert. Die Modelle und Aufnahmen sind in diesem Projekt nicht enthalten. Diese kann man über den untenstehenden Link herunterladen.
@@ -19,8 +20,8 @@ EchoWing beschäftigt sich mit der automatisierten Klassifikation verschiedener 
 Die heruntergeladenen Ordner müssen in das Projektverzeichnis eingefügt werden. Die Struktur sollte wie folgt aussehen:
 <img width="819" height="356" alt="Ordnerstruktur" src="https://github.com/user-attachments/assets/65eab6a3-6f2e-4150-b6a8-3a2ee5e1e584" />
 
-Der **trained_models** Ordner sollte als Unterordner in den models Ordner eingefügt werden
-Der **SoundFiles** Ordner sollte im Basisordner des Projekts eingefügt werden
+Der **trained_models** Ordner sollte als Unterordner in den "models" Ordner eingefügt werden (Entpacken ins Basisverzeichnis sollte aber genügen)
+Der **SoundFiles** Ordner sollte im Basisordner des "Projekts" eingefügt werden (Entpacken ins Basisverzeichnis sollte aber genügen)
 
 ### Preprocessing
 
