@@ -10,7 +10,8 @@ EchoWing beschäftigt sich mit der automatisierten Klassifikation verschiedener 
 
 1. Herunterladen der Audioaufnahmen und Modelle der verschiedenen Vogelarten von **Sciebo**
 
-**Download-Link**: https://uni-koeln.sciebo.de/s/MX1UsIKej251fgf
+**Download-Link Modelle**: https://uni-koeln.sciebo.de/s/MX1UsIKej251fgf
+**Download-Link Audiodaten**: https://uni-koeln.sciebo.de/s/zrzRbXPLqV0XQhy
 
 2. Ordnerstruktur herstellen
 
