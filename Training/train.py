@@ -19,8 +19,10 @@ load_dotenv()
 
 birdName = os.getenv('birdName')
 birdDir = f'../SoundFiles/{birdName}'
-MODEL_PATH = '../models/BirdNETModels/audio-model.h5'  # Pfad zum geladenen BirdNET BaseModel
-OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras' # Pfad zum gespeicherten Modell
+# Pfad zum geladenen BirdNET BaseModel
+MODEL_PATH = '../models/BirdNETModels/audio-model.h5'
+# Pfad zum gespeicherten Modell
+OUTPUT_MODEL_PATH = f'../models/trainedModels/birdnet_finetuned_callTypes_{birdName}.keras'
 
 # Parameter
 # Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
@@ -42,9 +44,9 @@ def prepare_data(balanced=True):
     file_paths_per_class = {}
 
     # Hier können die Klassen angepasst werden, die trainiert werden sollen
-    # label_names = ['alarmcall', 'beggingcall', 'call', 'song']
+    label_names = ['alarmcall', 'beggingcall', 'call', 'song']
     # label_names = ['alarmcall', 'call', 'flightcall', 'song']
-    label_names = ['alarmcall', 'call', 'song']
+    # label_names = ['alarmcall', 'call', 'song']
     # label_names = ['beggingcall', 'call', 'song']
 
 
