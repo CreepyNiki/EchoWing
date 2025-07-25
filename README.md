@@ -21,6 +21,7 @@ Die heruntergeladenen Ordner müssen in das Projektverzeichnis eingefügt werden
 <img width="819" height="356" alt="Ordnerstruktur" src="https://github.com/user-attachments/assets/65eab6a3-6f2e-4150-b6a8-3a2ee5e1e584" />
 
 Der **trained_models** Ordner sollte als Unterordner in den "models" Ordner eingefügt werden (Entpacken ins Basisverzeichnis sollte aber genügen)
+
 Der **SoundFiles** Ordner sollte im Basisordner des "Projekts" eingefügt werden (Entpacken ins Basisverzeichnis sollte aber genügen)
 
 ### Preprocessing
