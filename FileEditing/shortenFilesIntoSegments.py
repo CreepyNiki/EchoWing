@@ -19,7 +19,7 @@ def mp3towav(files_dir):
                 # Sample Rate für Blaumeise, Buchfink, Mönchsgrasmücke, Rotkehlchen, Star
                 y, sr = librosa.load(file_path, sr=48000)
                 # Sample Rate für Amsel, Haussperling, Kohlmeise, Zaunkönig, Zilpzalp
-                # audio.set_frame_rate(32000)
+                # y, sr = librosa.load(file_path, sr=32000)
                 # neuen Pfad zusammensetzen
                 wav_file_path = os.path.splitext(file_path)[0] + '.wav'
                 # Umwandlung von mp3 zu wav
